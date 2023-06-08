@@ -1,9 +1,27 @@
 import {useNavigation} from '@react-navigation/core';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {auth} from '../../firebase';
+import firebase from 'firebase/compat/app';
 
 const HomeScreen = () => {
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection('user')
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          setName(snapshot.data());
+        } else {
+          console.log('user doesnt exist');
+        }
+      });
+  });
+
   const navigation = useNavigation();
 
   const handleSignOut = () => {
@@ -18,6 +36,8 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Email: {auth.currentUser?.email}</Text>
+      <Text>First Name {name.firstName}</Text>
+      <Text>Last Name {name.lastName}</Text>
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>

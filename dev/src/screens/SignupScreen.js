@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/core';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -8,13 +8,26 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import {auth} from '../../firebase';
+import {auth, createUserDocument} from '../../firebase';
+import firebase from 'firebase/compat/app';
 
 const SignupScreen = () => {
+  console.log('==================================================');
   const [email, setEmail] = useState('');
-  const [name, SetName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace('Home');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   const navigation = useNavigation();
 
@@ -28,7 +41,18 @@ const SignupScreen = () => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Registered with:', user.email);
+        createUserDocument(user, {firstName}, {lastName}, {email});
       })
+      //   .then(() => {
+      // firebase
+      //   .firestore()
+      //   .collection('users')
+      //   .doc(firebase.auth().currentUser.uid)
+      //   .set({firstName, lastName, email});
+      //   const firstName = firebase.firestore().collection('users')
+      //   .doc(firebase.auth().currentUser.uid.get())
+      //   console.log('first & last name:', )
+      //   })
       .catch(error => alert(error.message));
   };
 
@@ -43,9 +67,15 @@ const SignupScreen = () => {
             style={styles.input}
           />
           <TextInput
-            placeholder="Full Name"
-            value={name}
-            onChangeText={text => setName(text)}
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={text => setFirstName(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={text => setLastName(text)}
             style={styles.input}
           />
 
@@ -73,7 +103,7 @@ const SignupScreen = () => {
             style={[styles.button, styles.buttonOutline]}
             onPress={handleBack}
           >
-          <Text style={styles.buttonOutlineText}>Back</Text>
+            <Text style={styles.buttonOutlineText}>Back</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
