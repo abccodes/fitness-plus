@@ -3,29 +3,36 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {auth} from '../../firebase';
 
-const HomeScreen = () => {
+const ForgotPassword = () => {
   const navigation = useNavigation();
 
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace('Login');
-      })
-      .catch(error => alert(error.message));
+  const handleBack = () => {
+    navigation.replace('Login');
   };
+
+  //   const handleSignOut = () => {
+  //     auth
+  //       .signOut()
+  //       .then(() => {
+  //         navigation.replace('Login');
+  //       })
+  //       .catch(error => alert(error.message));
+  //   };
 
   return (
     <View style={styles.container}>
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
+      <Text>Forgot Password</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.buttonOutline]}
+        onPress={handleBack}
+      >
+        <Text style={styles.buttonOutlineText}>Back</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default HomeScreen;
+export default ForgotPassword;
 
 const styles = StyleSheet.create({
   container: {

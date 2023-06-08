@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/core';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -6,20 +7,40 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {auth} from '../../firebase';
 
 const LoginScreen = () => {
-  console.log('==================================');
+  //   console.log('==================================');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace('Home');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  handleRegister = () => {
+    navigation.replace('Signup');
+  };
+
+  handleForgotPassword = () => {
+    navigation.replace('ForgotPassword');
+  };
+
+  const handleLogin = () => {
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
-        console.log('Registered with:', user.email);
+        console.log('Logged in with:', user.email);
       })
       .catch(error => alert(error.message));
   };
@@ -44,15 +65,22 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={handleRegister}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleForgotPassword}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Forgot Password</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
