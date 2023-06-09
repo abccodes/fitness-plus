@@ -3,24 +3,22 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {auth} from '../../firebase';
 import firebase from 'firebase/compat/app';
+import {collection, addDoc, getDocs} from 'firebase/firestore';
+import {db} from '../../firebase';
+
+const loadData = async () => {
+  const querySnapshot = await getDocs(collection(db, 'users'));
+  querySnapshot.forEach(doc => {
+    console.log(`${doc.id} => ${doc.data()}`);
+  });
+
+  return querySnapshot;
+};
+// let data;
+// await data = loadData();
 
 const HomeScreen = () => {
   const [name, setName] = useState('');
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('user')
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists) {
-          setName(snapshot.data());
-        } else {
-          console.log('user doesnt exist');
-        }
-      });
-  });
 
   const navigation = useNavigation();
 

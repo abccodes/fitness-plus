@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import {auth, createUserDocument} from '../../firebase';
 import firebase from 'firebase/compat/app';
+import test from './test';
+import {db} from '../../firebase';
+import {collection, addDoc, getDocs} from 'firebase/firestore';
 
 const SignupScreen = () => {
   console.log('==================================================');
@@ -35,25 +38,21 @@ const SignupScreen = () => {
     navigation.replace('Login');
   };
 
-  const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Registered with:', user.email);
-        createUserDocument(user, {firstName}, {lastName}, {email});
-      })
-      //   .then(() => {
-      // firebase
-      //   .firestore()
-      //   .collection('users')
-      //   .doc(firebase.auth().currentUser.uid)
-      //   .set({firstName, lastName, email});
-      //   const firstName = firebase.firestore().collection('users')
-      //   .doc(firebase.auth().currentUser.uid.get())
-      //   console.log('first & last name:', )
-      //   })
-      .catch(error => alert(error.message));
+  const handleSignUp = async () => {
+    try {
+      const {user} = await auth.createUserWithEmailAndPassword(email, password);
+
+      const docRef = await addDoc(collection(db, 'users'), {
+        email: email,
+        first: firstName,
+        last: lastName,
+      });
+
+      console.log('Document written with ID: ', docRef.id);
+      console.log('Registered with:', user.email);
+    } catch (error) {
+      console.log('ERROR', error);
+    }
   };
 
   return (
