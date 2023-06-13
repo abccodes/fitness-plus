@@ -15,7 +15,6 @@ import {db} from '../../firebase';
 import {collection, addDoc, getDocs} from 'firebase/firestore';
 
 const SignupScreen = () => {
-  console.log('==================================================');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -62,19 +61,19 @@ const SignupScreen = () => {
           <TextInput
             placeholder="Email"
             value={email}
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => setEmail(text.toLowerCase)}
             style={styles.input}
           />
           <TextInput
             placeholder="First Name"
             value={firstName}
-            onChangeText={text => setFirstName(text)}
+            onChangeText={text => setFirstName(text.toLowerCase)}
             style={styles.input}
           />
           <TextInput
             placeholder="Last Name"
             value={lastName}
-            onChangeText={text => setLastName(text)}
+            onChangeText={text => setLastName(text.toLowerCase)}
             style={styles.input}
           />
 

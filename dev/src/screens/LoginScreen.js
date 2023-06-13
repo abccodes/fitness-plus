@@ -11,7 +11,6 @@ import React, {useState, useEffect} from 'react';
 import {auth} from '../../firebase';
 
 const LoginScreen = () => {
-  //   console.log('==================================');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

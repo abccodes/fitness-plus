@@ -28,15 +28,6 @@ const ForgotPassword = () => {
       });
   };
 
-  //   const handleSignOut = () => {
-  //     auth
-  //       .signOut()
-  //       .then(() => {
-  //         navigation.replace('Login');
-  //       })
-  //       .catch(error => alert(error.message));
-  //   };
-
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -59,12 +50,6 @@ const ForgotPassword = () => {
           <Text style={styles.buttonOutlineText}>Back</Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-            style={[styles.button, styles.buttonOutline]}
-            onPress={handleBack}
-        >
-            <Text style={styles.buttonOutlineText}>Back</Text>
-        </TouchableOpacity> */}
     </View>
   );
 };

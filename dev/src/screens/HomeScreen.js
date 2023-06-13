@@ -6,19 +6,10 @@ import firebase from 'firebase/compat/app';
 import {collection, addDoc, getDocs} from 'firebase/firestore';
 import {db} from '../../firebase';
 
-const loadData = async () => {
-  const querySnapshot = await getDocs(collection(db, 'users'));
-  querySnapshot.forEach(doc => {
-    console.log(`${doc.id} => ${doc.data()}`);
-  });
-
-  return querySnapshot;
-};
-// let data;
-// await data = loadData();
-
-const HomeScreen = () => {
-  const [name, setName] = useState('');
+function HomeScreen() {
+  const [email, setEmail] = useState('');
+  const [first, setFirst] = useState('');
+  const [last, setLast] = useState('');
 
   const navigation = useNavigation();
 
@@ -31,17 +22,37 @@ const HomeScreen = () => {
       .catch(error => alert(error.message));
   };
 
+  const getUserData = async () => {
+    setEmail(auth.currentUser.email);
+    const usersRef = db.collection('users');
+    const test = await usersRef.where('email', '==', email).get();
+
+    if (test.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+
+    test.forEach(doc => {
+      setFirst(doc.data().first);
+      setLast(doc.data().last);
+    });
+  };
+
+  useEffect(() => {
+    getUserData();
+  });
+
   return (
     <View style={styles.container}>
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <Text>First Name {name.firstName}</Text>
-      <Text>Last Name {name.lastName}</Text>
+      <Text>Email: {email}</Text>
+      <Text>First Name {first}</Text>
+      <Text>Last Name {last}</Text>
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 export default HomeScreen;
 
