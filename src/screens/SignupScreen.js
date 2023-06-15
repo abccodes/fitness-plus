@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {auth, createUserDocument} from '../../firebase';
 import firebase from 'firebase/compat/app';
-import test from './test';
 import {db} from '../../firebase';
 import {collection, addDoc, getDocs} from 'firebase/firestore';
 

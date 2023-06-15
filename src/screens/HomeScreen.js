@@ -45,8 +45,8 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text>Email: {email}</Text>
-      <Text>First Name {first}</Text>
-      <Text>Last Name {last}</Text>
+      <Text>First Name: {first}</Text>
+      <Text>Last Name: {last}</Text>
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
