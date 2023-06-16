@@ -5,6 +5,16 @@ import {auth} from '../../firebase';
 import firebase from 'firebase/compat/app';
 import {collection, addDoc, getDocs} from 'firebase/firestore';
 import {db} from '../../firebase';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+import SettingsScreen from './SettingsScreen';
+import Stats from './Stats';
+import WorkoutScreen from './WorkoutScreen';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
   const [email, setEmail] = useState('');
@@ -43,14 +53,31 @@ function HomeScreen() {
   });
 
   return (
-    <View style={styles.container}>
-      <Text>Email: {email}</Text>
-      <Text>First Name: {first}</Text>
-      <Text>Last Name: {last}</Text>
-      <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
+    <Tab.Navigator>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Workout"
+        component={WorkoutScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Stats"
+        component={Stats}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Settings"
+        component={SettingsScreen}
+      />
+    </Tab.Navigator>
+    // <View style={styles.container}>
+    //   <Text>Email: {email}</Text>
+    //   <Text>First Name: {first}</Text>
+    //   <Text>Last Name: {last}</Text>
+    //   <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+    //     <Text style={styles.buttonText}>Sign out</Text>
+    //   </TouchableOpacity>
+    // </View>
   );
 }
 

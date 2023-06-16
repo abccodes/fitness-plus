@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-function Stats() {
+function WorkoutScreen() {
   return (
     <View>
       <TouchableOpacity>
-        <Text>Stats Screen</Text>
+        <Text>Workout Screen</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-export default Stats;
+export default WorkoutScreen;
 
 const styles = StyleSheet.create({
   container: {
